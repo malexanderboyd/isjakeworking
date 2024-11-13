@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Is Jake Working?</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #1a1a1a;
+        }
+        .status {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+        .yes {
+            color: #22c55e;
+        }
+        .no {
+            color: #ef4444;
+        }
+        .date {
+            color: #666;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Is Jake Working?</h1>
+    <div id="status" class="status"></div>
+    <div id="date" class="date"></div>
+</div>
+
+<script>
+    function isJakeWorking() {
+        const startDate = new Date('2023-10-16'); // First day off
+        const today = new Date();
+
+        // Calculate total days since start
+        const diffTime = Math.abs(today - startDate);
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+        // Each cycle is 6 weeks (42 days)
+        const dayInCycle = diffDays % 42;
+
+        // First 21 days (3 weeks) are off, next 21 days are working
+        return dayInCycle >= 21;
+    }
+
+    function updateStatus() {
+        const statusElement = document.getElementById('status');
+        const dateElement = document.getElementById('date');
+        const working = isJakeWorking();
+
+        statusElement.textContent = working ? 'YES' : 'NO';
+        statusElement.className = working ? 'status yes' : 'status no';
+
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
+        dateElement.textContent = new Date().toLocaleDateString(undefined, options);
+    }
+
+    updateStatus();
+    // Update every minute in case day changes
+    setInterval(updateStatus, 60000);
+</script>
+</body>
+</html>
